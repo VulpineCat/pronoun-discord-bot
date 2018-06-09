@@ -10,7 +10,7 @@ API_TOKEN = os.getenv("API_TOKEN")
 
 ROLENAME_HE = "He/Him"
 ROLENAME_SHE = "She/Her"
-ROLENAME_THEY = "They/Their"
+ROLENAME_THEY = "They/Them"
 
 
 CLIENT = discord.Client()
