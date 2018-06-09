@@ -30,12 +30,19 @@ def grab_role(server, rolename):
         if role.name == rolename:
             return role
 
+async def start_or_join_routine(server):
+    await check_or_create_role(server, ROLENAME_HE)
+    await check_or_create_role(server, ROLENAME_SHE)
+    await check_or_create_role(server, ROLENAME_THEY)
+
 @CLIENT.event
 async def on_ready():
     for server in CLIENT.servers:
-        await check_or_create_role(server, ROLENAME_HE)
-        await check_or_create_role(server, ROLENAME_SHE)
-        await check_or_create_role(server, ROLENAME_THEY)
+        await start_or_join_routine(server)
+
+@CLIENT.event
+async def on_server_join(server):
+        await start_or_join_routine(server)
 
 @CLIENT.event
 async def on_message(message):
