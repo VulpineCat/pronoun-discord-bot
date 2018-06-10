@@ -70,8 +70,8 @@ async def on_message(message):
         await CLIENT.send_message(
             message.channel,
             ("There are three gender pronoun roles available:\n\n" +
-             "`She/Her       -        assign/unassign me with !she`\n" +
-             "`He/Him        -        assign/unassign me with !he`\n" +
+             "`She/Her       -        assign/unassign me with !she `\n" +
+             "`He/Him        -        assign/unassign me with !he  `\n" +
              "`They/Them     -        assign/unassign me with !they`\n\n\n" +
              "Anything else you need? Hit up my *owner* at VulpineCat#0001 or `hello@vulpinecat.com`\n\n" +
              "Love You\n- ***Unmisgenderfyer***"
