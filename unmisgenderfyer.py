@@ -36,7 +36,7 @@ async def start_or_join_routine(server):
     await check_or_create_role(server, ROLENAME_THEY)
 
 async def add_or_remove_role(message, rolename):
-    if member_has_role(message.author, rolename):
+    if not member_has_role(message.author, rolename):
         await CLIENT.add_roles(message.author, grab_role(message.server, rolename))
         await CLIENT.send_message(message.channel, "Sucessfully added role!")
     else:
@@ -70,11 +70,11 @@ async def on_message(message):
         await CLIENT.send_message(
             message.channel,
             ("There are three gender pronoun roles available:\n\n" +
-             "`She/Her`      -        assign/unassign me with `!she`\n" +
-             "`He/Him`       -        assign/unassign me with `!he`\n" +
-             "`They/Them`    -        assign/unassign me with `!they`\n\n\n" +
-             "Anything else you need? Hit up my **owner** at VulpineCat#0001 or `hello@vulpinecat.com`\n\n" +
-             "Love You\n- ***Unmisgenderfyer**"
+             "`She/Her       -        assign/unassign me with !she`\n" +
+             "`He/Him        -        assign/unassign me with !he`\n" +
+             "`They/Them     -        assign/unassign me with !they`\n\n\n" +
+             "Anything else you need? Hit up my *owner* at VulpineCat#0001 or `hello@vulpinecat.com`\n\n" +
+             "Love You\n- ***Unmisgenderfyer***"
             ))
 
 
