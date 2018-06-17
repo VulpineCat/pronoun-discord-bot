@@ -157,6 +157,8 @@ async def on_message(message):
 
     elif message.content.startswith("!addtwitter") or message.content.startswith("!at"):
         command = message.content.split(" ")
+        twitter_handle = None
+        
         if len(command) is not 2:
             return
         if command[1].startswith("@"):
