@@ -155,6 +155,31 @@ async def on_message(message):
     elif message.content == '!they':
         await add_or_remove_role(message, ROLENAME_THEY)
 
+    elif message.content.startswith(!addtwitter) or message.content.startswith(!at):
+        command = message.content.split(" ")
+        if command.length is not 2:
+            return
+        if command[1].startswith("@"):
+            twitter_handle = command[1][1:]
+
+        file = open("data.json", 'r')
+        obj = json.loads(file.read())
+        file.close
+
+        obj[message.author.id]["social_media"]["twitter"] = twitter_handle
+
+        file = open("data.json", 'w')
+        json.dump(obj, file)
+        file.close
+
+        if not member_has_role(message.author, ROLENAME_TWITTER):
+            await CLIENT.add_roles(message.author, grab_role(message.server, ROLENAME_TWITTER))
+
+        await CLIENT.send_message(message.channel, ":bird: Updated your Twitter handle :bird:")
+
+
+
+
 
 
 
