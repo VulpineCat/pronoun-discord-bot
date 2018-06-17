@@ -223,9 +223,9 @@ async def on_message(message):
                 ("Weird, I can't seem to find this user in my data... :robot:"))
             return
 
-        message_buffer = "Profile of " + user.name
+        message_buffer = "***Profile of " + user.name + "***"
 
-        message_buffer += "\nGames Accounts:\n"
+        message_buffer += "\n**Game Accounts**:\n"
 
         has_game_account = False
         if obj["games"]["steam"]:
@@ -264,6 +264,9 @@ async def on_message(message):
             message_buffer += "Seems like they don't have any games account added! \n\n"
         else:
             message_buffer += "\n"
+
+
+        message_buffer += "\n**Social Media**:\n"
 
 
         has_social_media_account = False
@@ -596,8 +599,6 @@ def write_to_json(user, container, service, value):
     file = open("data.json", 'r')
     obj = json.loads(file.read())
     file.close
-
-    print(user, container, service, value)
 
     obj[user][container][service] = value
 
