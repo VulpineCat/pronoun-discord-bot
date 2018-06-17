@@ -175,6 +175,9 @@ async def on_message(message):
 
         obj[message.author.id]["social_media"]["twitter"] = twitter_handle
 
+        print(obj[message.author.id]['social_media']['twitter'])
+
+
         file = open("data.json", 'w')
         json.dump(obj, file)
         file.close
