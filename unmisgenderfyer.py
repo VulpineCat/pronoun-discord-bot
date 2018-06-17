@@ -169,8 +169,8 @@ async def on_message(message):
         file.close
 
         print(obj[message.author.id])
-        print(obj[message.author.id]["social_media"])
-        print(obj[message.author.id]["social_media"]["twitter"])
+        print(obj[message.author.id]['social_media'])
+        print(obj[message.author.id]['social_media']['twitter'])
 
 
         obj[message.author.id]["social_media"]["twitter"] = twitter_handle
