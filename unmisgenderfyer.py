@@ -157,6 +157,12 @@ async def on_server_join(server):
         await start_or_join_routine(server)
 
 @CLIENT.event
+async def on_member_join(member):
+    if not check_if_user_exists:
+        reset_user(member.id)
+
+
+@CLIENT.event
 async def on_message(message):
     if not message.content.startswith('!'):
         return
@@ -313,7 +319,7 @@ async def on_message(message):
     elif message.content.startswith("!addsteam") or message.content.startswith("!as"):
         command = message.content.split(" ")
 
-        if len(command) is not 2:
+        if len(command) != 2:
             return
 
         write_to_json(message.author.id, "games", "steam", command[1])
@@ -324,7 +330,7 @@ async def on_message(message):
     elif message.content.startswith("!addswitch") or message.content.startswith("!ans"):
         command = message.content.split(" ")
 
-        if len(command) is not 2:
+        if len(command) != 2:
             return
 
         write_to_json(message.author.id, "games", "switch", command[1])
@@ -335,7 +341,7 @@ async def on_message(message):
     elif message.content.startswith("!add3") or message.content.startswith("!a3"):
         command = message.content.split(" ")
 
-        if len(command) is not 2:
+        if len(command) != 2:
             return
 
         write_to_json(message.author.id, "games", "3ds", command[1])
@@ -346,7 +352,7 @@ async def on_message(message):
     elif message.content.startswith("!addpsn") or message.content.startswith("!aps"):
         command = message.content.split(" ")
 
-        if len(command) is not 2:
+        if len(command) != 2:
             return
 
         write_to_json(message.author.id, "games", "psn", command[1])
@@ -357,7 +363,7 @@ async def on_message(message):
     elif message.content.startswith("!addu") or message.content.startswith("!au"):
         command = message.content.split(" ")
 
-        if len(command) is not 2:
+        if len(command) != 2:
             return
 
         write_to_json(message.author.id, "games", "uplay", command[1])
@@ -368,7 +374,7 @@ async def on_message(message):
     elif message.content.startswith("!addo") or message.content.startswith("!ao"):
         command = message.content.split(" ")
 
-        if len(command) is not 2:
+        if len(command) != 2:
             return
 
         write_to_json(message.author.id, "games", "origin", command[1])
@@ -379,7 +385,7 @@ async def on_message(message):
     elif message.content.startswith("!addx") or message.content.startswith("!ax"):
         command = message.content.split(" ")
 
-        if len(command) is not 2:
+        if len(command) != 2:
             return
 
         write_to_json(message.author.id, "games", "xbox", command[1])
@@ -390,7 +396,7 @@ async def on_message(message):
     elif message.content.startswith("!addep") or message.content.startswith("!aep"):
         command = message.content.split(" ")
 
-        if len(command) is not 2:
+        if len(command) != 2:
             return
 
         write_to_json(message.author.id, "games", "epic", command[1])
@@ -403,7 +409,7 @@ async def on_message(message):
         command = message.content.split(" ")
         twitter_handle = None
 
-        if len(command) is not 2:
+        if len(command) != 2:
             return
 
         if message.mentions:
@@ -423,7 +429,7 @@ async def on_message(message):
     elif message.content.startswith("!addfacebook") or message.content.startswith("!afb"):
         command = message.content.split(" ")
 
-        if len(command) is not 2:
+        if len(command) != 2:
             return
 
         write_to_json(message.author.id, "social_media", "facebook", command[1])
@@ -434,7 +440,7 @@ async def on_message(message):
     elif message.content.startswith("!addtumblr"):
         command = message.content.split(" ")
 
-        if len(command) is not 2:
+        if len(command) != 2:
             return
 
         write_to_json(message.author.id, "social_media", "tumblr", command[1])
@@ -445,7 +451,7 @@ async def on_message(message):
     elif message.content.startswith("!addyoutube") or message.content.startswith("!ayt"):
         command = message.content.split(" ")
 
-        if len(command) is not 2:
+        if len(command) != 2:
             return
 
         write_to_json(message.author.id, "social_media", "youtube", command[1])
@@ -456,7 +462,7 @@ async def on_message(message):
     elif message.content.startswith("!adddeviant") or message.content.startswith("!ada"):
         command = message.content.split(" ")
 
-        if len(command) is not 2:
+        if len(command) != 2:
             return
 
         write_to_json(message.author.id, "social_media", "deviantart", command[1])
@@ -467,7 +473,7 @@ async def on_message(message):
     elif message.content.startswith("!addetsy") or message.content.startswith("!aet"):
         command = message.content.split(" ")
 
-        if len(command) is not 2:
+        if len(command) != 2:
             return
 
         write_to_json(message.author.id, "social_media", "etsy", command[1])
@@ -479,7 +485,7 @@ async def on_message(message):
         command = message.content.split(" ")
         username = None
 
-        if len(command) is not 2:
+        if len(command) != 2:
             return
 
         if command[1].startswith("http"):
@@ -598,32 +604,39 @@ async def on_message(message):
 def write_to_json(user, container, service, value):
     file = open("data.json", 'r')
     obj = json.loads(file.read())
-    file.close
+    file.close()
 
     obj[user][container][service] = value
 
 
     file = open("data.json", 'w')
     json.dump(obj, file)
-    file.close
+    file.close()
 
 def reset_user(user):
     file = open("data.json", 'r')
     obj = json.loads(file.read())
-    file.close
+    file.close()
 
     obj[user] = EMPTY_USER
 
     file = open("data.json", 'w')
     json.dump(obj, file)
-    file.close
+    file.close()
 
 def get_json_for_user(user):
     file = open("data.json", 'r')
     obj = json.loads(file.read())
-    file.close
+    file.close()
 
     return obj[user.id]
+
+def check_if_user_exists(user):
+    file = open("data.json", 'r')
+    obj = json.loads(file.read())
+    file.close()
+
+    return user.id in obj
 
 
 
