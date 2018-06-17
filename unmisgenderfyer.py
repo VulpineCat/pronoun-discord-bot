@@ -155,7 +155,7 @@ async def on_message(message):
     elif message.content == '!they':
         await add_or_remove_role(message, ROLENAME_THEY)
 
-    elif message.content.startswith(!addtwitter) or message.content.startswith(!at):
+    elif message.content.startswith("!addtwitter") or message.content.startswith("!at"):
         command = message.content.split(" ")
         if command.length is not 2:
             return
@@ -175,7 +175,7 @@ async def on_message(message):
         if not member_has_role(message.author, ROLENAME_TWITTER):
             await CLIENT.add_roles(message.author, grab_role(message.server, ROLENAME_TWITTER))
 
-        await CLIENT.send_message(message.channel, ":bird: Updated your Twitter handle :bird:")
+        await CLIENT.send_message(message.channel, ":bird: Updated your Twitter handle! :bird:")
 
 
 
