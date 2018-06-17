@@ -175,8 +175,10 @@ async def on_message(message):
              "`3DS                           -        add your friendscode with !add3ds or !a3`\n" +
              "`Playstation Network           -        add your PSN-ID with !addpsn or !aps`\n" +
              "`Uplay                         -        add your Uplay username with !adduplay or !au`\n" +
-             "`Origin                        -        add your Origin username with !addorigin or !ao`\n" +
-             "`Xbox                          -        add your Gamertag with !addxbox or !ax`\n" +
+             "`Origin                        -        add your Origin username with !addorigin or !ao`\n"))
+        await CLIENT.send_message(
+            message.channel,
+            ("`Xbox                          -        add your Gamertag with !addxbox or !ax`\n" +
              "`Epic Games                    -        add your Epic Games username with !addepic or !aep`\n\n\n" +
              "You can also add a few of your social media handles:\n\n" +
              "`Twitter                       -        add your twitter username or url via !addtwitter or !at`\n" +
