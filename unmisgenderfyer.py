@@ -622,7 +622,7 @@ def get_json_for_user(user):
     obj = json.loads(file.read())
     file.close
 
-    return obj[user]
+    return obj[user.id]
 
 
 
