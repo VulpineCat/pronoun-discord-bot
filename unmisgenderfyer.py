@@ -595,6 +595,8 @@ def write_to_json(user, container, service, value):
     obj = json.loads(file.read())
     file.close
 
+    print(user, container, service, value)
+
     obj[user][container][service] = value
 
 
