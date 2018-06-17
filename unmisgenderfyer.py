@@ -81,7 +81,7 @@ async def check_or_create_roles(server):
     await check_or_create_role(server, ROLENAME_ETSY)
     await check_or_create_role(server, ROLENAME_FA)
 
-async def validate_users_json(server):
+def validate_users_json(server):
     with open('data.json', 'r+') as file:
         obj = json.loads(file.read())
         for member in server.members:
