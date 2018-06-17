@@ -33,6 +33,9 @@ ROLENAME_YOUTUBE = "Youtube"
 ROLENAME_DA = "deviantArt"
 ROLENAME_ETSY = "Etsy"
 ROLENAME_FA = "FurAffinity"
+
+# JSON
+EMPTY_USER = '{"games":{"steam":null,"switch":null,"3ds":null,"psn":null,"uplay":null,"origin":null,"xbox":null,"epic":null},"social_media":{"twitter":null,"facebook":null,"tumblr":null,"youtube":null,"deviantart":null,"etsy":null,"furaffinity":null}}'
 ##############################################################################
 
 CLIENT = discord.Client()
@@ -54,6 +57,8 @@ def grab_role(server, rolename):
 
 async def start_or_join_routine(server):
     await check_or_create_roles(server)
+    validate_users_json(server)
+
 
 
 async def check_or_create_roles(server):
@@ -76,8 +81,16 @@ async def check_or_create_roles(server):
     await check_or_create_role(server, ROLENAME_ETSY)
     await check_or_create_role(server, ROLENAME_FA)
 
-async def validate_user_json(server):
-    pass
+async def validate_users_json(server):
+    with open('data.json', 'r+') as file:
+        obj = json.loads(file.read())
+        for member in server.members:
+            if member.id in obj:
+                continue
+            else:
+                obj[member.id] = EMPTY_USER
+        json.dump(obj, file)
+
 
 
 async def add_or_remove_role(message, rolename):
@@ -101,7 +114,8 @@ def check_for_json():
     if os.path.isfile("data.json"):
         return
     file = open("data.json", "w+")
-    json.dump({"Hey": "You"}, file)
+    json.dump({}, file)
+    file.close()
 
 
 @CLIENT.event
