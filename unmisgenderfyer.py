@@ -35,7 +35,7 @@ ROLENAME_ETSY = "Etsy"
 ROLENAME_FA = "FurAffinity"
 
 # JSON
-EMPTY_USER = '{"games":{"steam":null,"switch":null,"3ds":null,"psn":null,"uplay":null,"origin":null,"xbox":null,"epic":null},"social_media":{"twitter":null,"facebook":null,"tumblr":null,"youtube":null,"deviantart":null,"etsy":null,"furaffinity":null}}'
+EMPTY_USER = {"games":{"steam": None,"switch": None,"3ds": None,"psn": None,"uplay": None,"origin": None,"xbox": None,"epic": None},"social_media":{"twitter": None,"facebook": None,"tumblr": None,"youtube": None,"deviantart": None,"etsy": None,"furaffinity": None}}
 ##############################################################################
 
 CLIENT = discord.Client()
