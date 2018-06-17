@@ -166,6 +166,8 @@ async def on_message(message):
             twitter_handle = message.author.name
         elif command[1].startswith("@"):
             twitter_handle = command[1][1:]
+        elif command[1].startswith("http"):
+            twitter_handle = command[1].split("/")[-1]
         else:
             twitter_handle = command[1]
 
