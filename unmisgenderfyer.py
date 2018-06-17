@@ -7,12 +7,33 @@ from dotenv import load_dotenv
 ENV_PATH = Path('.') / '.env'
 load_dotenv(dotenv_path=ENV_PATH)
 
+##############################################################################
 API_TOKEN = os.getenv("API_TOKEN")
 
+# Gender
 ROLENAME_HE = "He/Him"
 ROLENAME_SHE = "She/Her"
 ROLENAME_THEY = "They/Them"
 
+# Games
+ROLENAME_STEAM = "Steam"
+ROLENAME_SWITCH = "Nintendo Switch"
+ROLENAME_3DS = "Nintendo 3DS"
+ROLENAME_PSN = "Playstation Network"
+ROLENAME_UPLAY = "Uplay"
+ROLENAME_ORIGIN = "Origin"
+ROLENAME_XBOX = "Xbox"
+ROLENAME_EPIC = "Epic Games"
+
+# Social Media
+ROLENAME_TWITTER = "Twitter"
+ROLENAME_FACEBOOK = "Facebook"
+ROLENAME_TUMBLR = "Tumblr"
+ROLENAME_YOUTUBE = "Youtube"
+ROLENAME_DA = "deviantArt"
+ROLENAME_ETSY = "Etsy"
+ROLENAME_FA = "FurAffinity"
+##############################################################################
 
 CLIENT = discord.Client()
 
@@ -32,9 +53,32 @@ def grab_role(server, rolename):
             return role
 
 async def start_or_join_routine(server):
+    await check_or_create_roles(server)
+
+
+async def check_or_create_roles(server):
     await check_or_create_role(server, ROLENAME_HE)
     await check_or_create_role(server, ROLENAME_SHE)
     await check_or_create_role(server, ROLENAME_THEY)
+    await check_or_create_role(server, ROLENAME_STEAM)
+    await check_or_create_role(server, ROLENAME_SWITCH)
+    await check_or_create_role(server, ROLENAME_3DS)
+    await check_or_create_role(server, ROLENAME_PSN)
+    await check_or_create_role(server, ROLENAME_UPLAY)
+    await check_or_create_role(server, ROLENAME_ORIGIN)
+    await check_or_create_role(server, ROLENAME_XBOX)
+    await check_or_create_role(server, ROLENAME_EPIC)
+    await check_or_create_role(server, ROLENAME_TWITTER)
+    await check_or_create_role(server, ROLENAME_FACEBOOK)
+    await check_or_create_role(server, ROLENAME_TUMBLR)
+    await check_or_create_role(server, ROLENAME_YOUTUBE)
+    await check_or_create_role(server, ROLENAME_DA)
+    await check_or_create_role(server, ROLENAME_ETSY)
+    await check_or_create_role(server, ROLENAME_FA)
+
+async def validate_user_json(server):
+    pass
+
 
 async def add_or_remove_role(message, rolename):
     if not member_has_role(message.author, rolename):
@@ -53,8 +97,15 @@ def member_has_role(member, rolename):
     return False
 
 
+def check_for_json():
+    if os.path.isfile("data.json"):
+        return
+    file = open("data.json", "w+")
+
+
 @CLIENT.event
 async def on_ready():
+    check_for_json()
     for server in CLIENT.servers:
         await start_or_join_routine(server)
 
@@ -85,6 +136,8 @@ async def on_message(message):
         await add_or_remove_role(message, ROLENAME_SHE)
     elif message.content == '!they':
         await add_or_remove_role(message, ROLENAME_THEY)
+
+
 
 
 CLIENT.run(API_TOKEN)
