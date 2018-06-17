@@ -101,6 +101,7 @@ def check_for_json():
     if os.path.isfile("data.json"):
         return
     file = open("data.json", "w+")
+    json.dump({"Hey": "You"}, file)
 
 
 @CLIENT.event
