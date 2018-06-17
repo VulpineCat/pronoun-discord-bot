@@ -1,4 +1,5 @@
 import os
+import json
 from pathlib import Path
 import discord
 from dotenv import load_dotenv
@@ -66,7 +67,7 @@ async def on_message(message):
     if not message.content.startswith('!'):
         return
 
-    elif message.content.startswith('!help') or message.content.startswith('!list'):
+    elif message.content == '!help' or message.content == '!list':
         await CLIENT.send_message(
             message.channel,
             ("There are three gender pronoun roles available:\n\n" +
@@ -78,22 +79,12 @@ async def on_message(message):
             ))
 
 
-    elif message.content.startswith('!he'):
+    elif message.content == '!he':
         await add_or_remove_role(message, ROLENAME_HE)
-    elif message.content.startswith('!she'):
+    elif message.content == '!she':
         await add_or_remove_role(message, ROLENAME_SHE)
-    elif message.content.startswith('!they'):
+    elif message.content == '!they':
         await add_or_remove_role(message, ROLENAME_THEY)
 
-
-    elif message.content.startswith('!unhe'):
-        await CLIENT.remove_roles(message.author, grab_role(message.server, ROLENAME_HE))
-        await CLIENT.send_message(message.channel, "Sucessfully removed role!")
-    elif message.content.startswith('!unshe'):
-        await CLIENT.remove_roles(message.author, grab_role(message.server, ROLENAME_SHE))
-        await CLIENT.send_message(message.channel, "Sucessfully removed role!")
-    elif message.content.startswith('!unthey'):
-        await CLIENT.remove_roles(message.author, grab_role(message.server, ROLENAME_THEY))
-        await CLIENT.send_message(message.channel, "Sucessfully removed role!")
 
 CLIENT.run(API_TOKEN)
