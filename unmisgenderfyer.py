@@ -158,7 +158,7 @@ async def on_message(message):
     elif message.content.startswith("!addtwitter") or message.content.startswith("!at"):
         command = message.content.split(" ")
         twitter_handle = None
-        
+
         if len(command) is not 2:
             return
         if command[1].startswith("@"):
@@ -167,6 +167,11 @@ async def on_message(message):
         file = open("data.json", 'r')
         obj = json.loads(file.read())
         file.close
+
+        print(obj[message.author.id])
+        print(obj[message.author.id]["social_media"])
+        print(obj[message.author.id]["social_media"]["twitter"])
+
 
         obj[message.author.id]["social_media"]["twitter"] = twitter_handle
 
