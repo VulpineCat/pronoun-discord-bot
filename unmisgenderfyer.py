@@ -161,17 +161,17 @@ async def on_message(message):
 
         if len(command) is not 2:
             return
-        if command[1].startswith("@"):
+
+        if message.mentions:
+            twitter_handle = message.author.name
+        elif command[1].startswith("@"):
             twitter_handle = command[1][1:]
+        else:
+            twitter_handle = command[1]
 
         file = open("data.json", 'r')
         obj = json.loads(file.read())
         file.close
-
-        print(obj[message.author.id])
-        print(obj[message.author.id]['social_media'])
-        print(obj[message.author.id]['social_media']['twitter'])
-
 
         obj[message.author.id]["social_media"]["twitter"] = twitter_handle
 
