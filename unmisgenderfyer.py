@@ -33,9 +33,11 @@ ROLENAME_YOUTUBE = "Youtube"
 ROLENAME_DA = "deviantArt"
 ROLENAME_ETSY = "Etsy"
 ROLENAME_FA = "FurAffinity"
+ROLENAME_TELEGRAM = "Telegram"
+ROLENAME_TWITCH = "Twitch"
 
 # JSON
-EMPTY_USER = {"games":{"steam": None,"switch": None,"3ds": None,"psn": None,"uplay": None,"origin": None,"xbox": None,"epic": None},"social_media":{"twitter": None,"facebook": None,"tumblr": None,"youtube": None,"deviantart": None,"etsy": None,"furaffinity": None}}
+EMPTY_USER = {"games":{"steam": None,"switch": None,"3ds": None,"psn": None,"uplay": None,"origin": None,"xbox": None,"epic": None},"social_media":{"twitter": None,"facebook": None,"tumblr": None,"youtube": None,"deviantart": None,"etsy": None,"furaffinity": None,"telegram": None,"twitch": None}}
 ##############################################################################
 
 CLIENT = discord.Client()
@@ -105,6 +107,8 @@ def validate_users_json(server):
 
     for member in server.members:
         if member.id in obj:
+            obj[member.id]["social_media"]["telegram"] = None
+            obj[member.id]["social_media"]["twitch"] = None
             continue
         else:
             obj[member.id] = EMPTY_USER
@@ -280,17 +284,25 @@ async def on_message(message):
             has_social_media_account = True
             message_buffer += "Twitter: https://www.twitter.com/" + obj["social_media"]["twitter"] + "\n"
 
+        if obj["social_media"]["telegram"]:
+            has_social_media_account = True
+            message_buffer += "Telegram: https://t.me/" + obj["social_media"]["telegram"] + "\n"
+
         if obj["social_media"]["facebook"]:
             has_social_media_account = True
             message_buffer += "Facebook: " + obj["social_media"]["facebook"] + "\n"
 
         if obj["social_media"]["tumblr"]:
             has_social_media_account = True
-            message_buffer += "Tumblr: " + obj["social_media"]["tumblr"] + "\n"
+            message_buffer += "Tumblr: https://" + obj["social_media"]["tumblr"] + ".tumblr.com\n"
 
         if obj["social_media"]["youtube"]:
             has_social_media_account = True
             message_buffer += "Youtube Channel: " + obj["social_media"]["youtube"] + "\n"
+
+        if obj["social_media"]["twitch"]:
+            has_social_media_account = True
+            message_buffer += "Twitch: https://www.twitch.tv/" + obj["social_media"]["twitch"] + "\n"
 
         if obj["social_media"]["deviantart"]:
             has_social_media_account = True
