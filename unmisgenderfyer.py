@@ -112,8 +112,6 @@ def validate_users_json(server):
 
     for member in server.members:
         if member.id in obj:
-            obj[member.id]["social_media"]["telegram"] = None
-            obj[member.id]["social_media"]["twitch"] = None
             continue
         else:
             obj[member.id] = EMPTY_USER
