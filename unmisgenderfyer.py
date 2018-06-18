@@ -699,7 +699,7 @@ async def on_message(message):
                     container = "games"
                 else:
                     container = "social_media"
-                for member in message.server.member:
+                for member in message.server.members:
                     if get_json_for_user(member)[container][command[1]]:
                         message_buffer += member.name + ": " + get_json_for_user(member)[container][command[1]] + "\n"
                 if message_buffer == "":
