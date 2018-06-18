@@ -311,7 +311,7 @@ async def on_message(message):
 
         if obj["social_media"]["deviantart"]:
             has_social_media_account = True
-            message_buffer += "deviantArt: " + obj["social_media"]["deviantart"] + "\n"
+            message_buffer += "deviantArt: https://" + obj["social_media"]["deviantart"] + ".deviantart.com\n"
 
         if obj["social_media"]["etsy"]:
             has_social_media_account = True
@@ -519,7 +519,7 @@ async def on_message(message):
         write_to_json(message.author.id, "social_media", "twitch", username)
         await add_role_if_missing(message, ROLENAME_TWITCH)
 
-        await CLIENT.send_message(message.channel, ":play_pause: We'll get people to smash that subscribe button before long! :raised_hands:")
+        await CLIENT.send_message(message.channel, ":play_pause: Stream On!")
 
     elif message.content.startswith("!adddeviant") or message.content.startswith("!ada"):
         command = message.content.split(" ")
@@ -686,6 +686,12 @@ async def on_message(message):
         games = [key for key in EMPTY_USER["games"]]
         possible_commands = social_media + games
 
+        TWITTER_URL = "https://www.twitter.com/"
+        TWITCH_URL = "https://www.twitch.tv/"
+        TELEGRAM_URL = "https://t.me/"
+        FUR_URL = "https://www.furafinity.net/user/"
+        HT = "https://"
+
 
         if len(command) == 1:
             await CLIENT.send_message(message.channel, "The following roles are available: " + ", ".join(possible_commands))
@@ -699,7 +705,20 @@ async def on_message(message):
                     container = "social_media"
                 for member in message.server.members:
                     if get_json_for_user(member)[container][command[1]]:
-                        message_buffer += member.name + ": " + get_json_for_user(member)[container][command[1]] + "\n"
+                        if(command[1] == "twitter"):
+                            message_buffer += member.name + ": " + TWITTER_URL + get_json_for_user(member)[container][command[1]] + "\n"
+                        elif(command[1] == "twitch"):
+                            message_buffer += member.name + ": " + TWITCH_URL + get_json_for_user(member)[container][command[1]] + "\n"
+                        elif(command[1] == "telegram"):
+                            message_buffer += member.name + ": " + TELEGRAM_URL + get_json_for_user(member)[container][command[1]] + "\n"
+                        elif(command[1] == "furaffinity"):
+                            message_buffer += member.name + ": " + FUR_URL + get_json_for_user(member)[container][command[1]] + "\n"
+                        elif(command[1] == "deviantart"):
+                            message_buffer += member.name + ": " + HT + get_json_for_user(member)[container][command[1]] + ".deviantart.com\n"
+                        elif(command[1] == "tumblr"):
+                            message_buffer += member.name + ": " + HT + get_json_for_user(member)[container][command[1]] + ".tumblr.com\n"
+                        else:
+                            message_buffer += member.name + ": " + get_json_for_user(member)[container][command[1]] + "\n"
                 if message_buffer == "":
                     await CLIENT.send_message(message.channel, "None of the users have this key!")
                 else:
