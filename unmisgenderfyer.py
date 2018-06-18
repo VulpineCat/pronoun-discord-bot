@@ -27,14 +27,15 @@ ROLENAME_EPIC = "Epic Games"
 
 # Social Media
 ROLENAME_TWITTER = "Twitter"
+ROLENAME_TELEGRAM = "Telegram"
 ROLENAME_FACEBOOK = "Facebook"
 ROLENAME_TUMBLR = "Tumblr"
 ROLENAME_YOUTUBE = "Youtube"
+ROLENAME_TWITCH = "Twitch"
 ROLENAME_DA = "deviantArt"
 ROLENAME_ETSY = "Etsy"
 ROLENAME_FA = "FurAffinity"
-ROLENAME_TELEGRAM = "Telegram"
-ROLENAME_TWITCH = "Twitch"
+
 
 # JSON
 EMPTY_USER = {"games":{"steam": None,"switch": None,"3ds": None,"psn": None,"uplay": None,"origin": None,"xbox": None,"epic": None},"social_media":{"twitter": None,"facebook": None,"tumblr": None,"youtube": None,"deviantart": None,"etsy": None,"furaffinity": None,"telegram": None,"twitch": None}}
@@ -76,9 +77,11 @@ async def check_or_create_roles(server):
     await check_or_create_role(server, ROLENAME_XBOX)
     await check_or_create_role(server, ROLENAME_EPIC)
     await check_or_create_role(server, ROLENAME_TWITTER)
+    await check_or_create_role(server, ROLENAME_TELEGRAM)
     await check_or_create_role(server, ROLENAME_FACEBOOK)
     await check_or_create_role(server, ROLENAME_TUMBLR)
     await check_or_create_role(server, ROLENAME_YOUTUBE)
+    await check_or_create_role(server, ROLENAME_TWITCH)
     await check_or_create_role(server, ROLENAME_DA)
     await check_or_create_role(server, ROLENAME_ETSY)
     await check_or_create_role(server, ROLENAME_FA)
@@ -93,9 +96,11 @@ async def reset_roles(message):
     await remove_role_if_owned(message, ROLENAME_XBOX)
     await remove_role_if_owned(message, ROLENAME_EPIC)
     await remove_role_if_owned(message, ROLENAME_TWITTER)
+    await remove_role_if_owned(message, ROLENAME_TELEGRAM)
     await remove_role_if_owned(message, ROLENAME_FACEBOOK)
     await remove_role_if_owned(message, ROLENAME_TUMBLR)
     await remove_role_if_owned(message, ROLENAME_YOUTUBE)
+    await remove_role_if_owned(message, ROLENAME_TWITCH)
     await remove_role_if_owned(message, ROLENAME_DA)
     await remove_role_if_owned(message, ROLENAME_ETSY)
     await remove_role_if_owned(message, ROLENAME_FA)
@@ -158,7 +163,7 @@ async def on_ready():
 
 @CLIENT.event
 async def on_server_join(server):
-        await start_or_join_routine(server)
+    await start_or_join_routine(server)
 
 @CLIENT.event
 async def on_member_join(member):
@@ -191,10 +196,12 @@ async def on_message(message):
             ("`Xbox                          -        add your Gamertag with !addxbox or !ax`\n" +
              "`Epic Games                    -        add your Epic Games username with !addepic or !aep`\n\n\n" +
              "You can also add a few of your social media handles:\n\n" +
-             "`Twitter                       -        add your twitter username or url via !addtwitter or !at`\n" +
+             "`Twitter                       -        add your twitter username or url via !addtwitter or !atw`\n" +
+             "`Telegram                      -        add your telegram handle or url via !addtelegram or !atg`\n" +
              "`Facebook                      -        add your facebook profile !addfacebook or !afb`\n" +
              "`Tumblr                        -        add your tumblr blog with !addtumblr`\n" +
              "`Youtube                       -        add your channel with !addyoutube or !ayt`\n" +
+             "`Twitch                        -        add your stream with !addtwitch`\n" +
              "`deviantArt                    -        add your dA page via !adddeviant or !ada`\n" +
              "`Etsy                          -        add your Etsy Store with !addetsy or !aet`\n" +
              "`FurAffinity                   -        add your sins via !addfur or !afa`\n\n\n" +
@@ -276,7 +283,7 @@ async def on_message(message):
             message_buffer += "\n"
 
 
-        message_buffer += "\n**Social Media**:\n"
+        message_buffer += "**Social Media**:\n"
 
 
         has_social_media_account = False
@@ -417,7 +424,7 @@ async def on_message(message):
         await CLIENT.send_message(message.channel, "What do ya say? Fortnite 2nite?")
 
 
-    elif message.content.startswith("!addtwitter") or message.content.startswith("!at"):
+    elif message.content.startswith("!addtwitter") or message.content.startswith("!atw"):
         command = message.content.split(" ")
         twitter_handle = None
 
@@ -438,6 +445,27 @@ async def on_message(message):
 
         await CLIENT.send_message(message.channel, ":bird: Updated your Twitter handle! :bird:")
 
+    elif message.content.startswith("!addtelegram") or message.content.startswith("!atg"):
+        command = message.content.split(" ")
+        telegram_handle = None
+
+        if len(command) != 2:
+            return
+
+        if message.mentions:
+            telegram_handle = message.author.name
+        elif command[1].startswith("@"):
+            telegram_handle = command[1][1:]
+        elif command[1].startswith("http"):
+            telegram_handle = command[1].split("/")[-1]
+        else:
+            telegram_handle = command[1]
+
+        write_to_json(message.author.id, "social_media", "telegram", telegram_handle)
+        await add_role_if_missing(message, ROLENAME_TELEGRAM)
+
+        await CLIENT.send_message(message.channel, "Have fun chatting!")
+
     elif message.content.startswith("!addfacebook") or message.content.startswith("!afb"):
         command = message.content.split(" ")
 
@@ -451,11 +479,18 @@ async def on_message(message):
 
     elif message.content.startswith("!addtumblr"):
         command = message.content.split(" ")
+        username = None
 
         if len(command) != 2:
             return
 
-        write_to_json(message.author.id, "social_media", "tumblr", command[1])
+        if command[1].startswith("http"):
+            var = command[1].split("/")
+            username = var.split(".")[0]
+        else:
+            username = command[1]
+
+        write_to_json(message.author.id, "social_media", "tumblr", username)
         await add_role_if_missing(message, ROLENAME_TUMBLR)
 
         await CLIENT.send_message(message.channel, "Sorry, I don't really use Tumblr, so I don't have anything witty to say. Sucessfully saved!")
@@ -471,13 +506,38 @@ async def on_message(message):
 
         await CLIENT.send_message(message.channel, ":play_pause: We'll get people to smash that subscribe button before long! :raised_hands:")
 
-    elif message.content.startswith("!adddeviant") or message.content.startswith("!ada"):
+    elif message.content.startswith("!addtwitch"):
         command = message.content.split(" ")
+        username = None
 
         if len(command) != 2:
             return
 
-        write_to_json(message.author.id, "social_media", "deviantart", command[1])
+        if command[1].startswith("http"):
+            username = command[1].split("/")[-1]
+        else:
+            username = command[1]
+
+        write_to_json(message.author.id, "social_media", "twitch", username)
+        await add_role_if_missing(message, ROLENAME_TWITCH)
+
+        await CLIENT.send_message(message.channel, ":play_pause: We'll get people to smash that subscribe button before long! :raised_hands:")
+
+    elif message.content.startswith("!adddeviant") or message.content.startswith("!ada"):
+        command = message.content.split(" ")
+        username = None
+
+        if len(command) != 2:
+            return
+
+        if command[1].startswith("http"):
+            var = command[1].split("/")
+            username = var.split(".")[0]
+        else:
+            username = command[1]
+
+
+        write_to_json(message.author.id, "social_media", "deviantart", username)
         await add_role_if_missing(message, ROLENAME_DA)
 
         await CLIENT.send_message(message.channel, "Whether :paintbrush: or :writing_hand:, we too appreciate art here~!")
@@ -562,9 +622,15 @@ async def on_message(message):
         await CLIENT.send_message(message.channel, "Sucessfully deleted that entry!")
 
 
-    elif message.content.startswith("!deltwitter") or message.content.startswith("!dt"):
+    elif message.content.startswith("!deltwitter") or message.content.startswith("!dtw"):
         write_to_json(message.author.id, "social_media", "twitter", None)
         await remove_role_if_owned(message, ROLENAME_TWITTER)
+
+        await CLIENT.send_message(message.channel, "Sucessfully deleted that entry!")
+
+    elif message.content.startswith("!deltelegram") or message.content.startswith("!dtg"):
+        write_to_json(message.author.id, "social_media", "telegram", None)
+        await remove_role_if_owned(message, ROLENAME_TELEGRAM)
 
         await CLIENT.send_message(message.channel, "Sucessfully deleted that entry!")
 
@@ -583,6 +649,12 @@ async def on_message(message):
     elif message.content.startswith("!delyoutube") or message.content.startswith("!dyt"):
         write_to_json(message.author.id, "social_media", "youtube", None)
         await remove_role_if_owned(message, ROLENAME_YOUTUBE)
+
+        await CLIENT.send_message(message.channel, "Sucessfully deleted that entry!")
+
+    elif message.content.startswith("!deltwitch"):
+        write_to_json(message.author.id, "social_media", "twitch", None)
+        await remove_role_if_owned(message, ROLENAME_TWITCH)
 
         await CLIENT.send_message(message.channel, "Sucessfully deleted that entry!")
 
@@ -609,6 +681,35 @@ async def on_message(message):
         await reset_roles(message)
 
         await CLIENT.send_message(message.channel, "Deleted your entire profile!")
+
+    elif message.content.startswith("!showall"):
+        command = message.content.split(" ")
+        social_media = [key for key in EMPTY_USER["social_media"]]
+        games = [key for key in EMPTY_USER["games"]]
+        possible_commands = social_media + games
+
+
+        if len(command) == 1:
+            await CLIENT.send_message(message.channel, "The following roles are available: " + ", ".join(possible_commands))
+        elif len(command) == 2:
+            if command[1] in possible_commands:
+                message_buffer = ""
+                container = None
+                if command[1] in games:
+                    container = "games"
+                else:
+                    container = "social_media"
+                for member in message.server.member:
+                    if get_json_for_user(member)[container][command[1]]:
+                        message_buffer += member.name + ": " + get_json_for_user(member)[container][command[1]] + "\n"
+                if message_buffer == "":
+                    await CLIENT.send_message(message.channel, "None of the users have this key!")
+                else:
+                    await CLIENT.send_message(message.channel, message_buffer)
+
+            else:
+                await CLIENT.send_message(message.channel, "Key not recognized!")
+
 
 
 
