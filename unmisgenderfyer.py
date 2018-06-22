@@ -319,7 +319,7 @@ async def on_message(message):
 
         if obj["social_media"]["furaffinity"]:
             has_social_media_account = True
-            message_buffer += "FurAffinity: https://www.furafinity.net/user/" + obj["social_media"]["furaffinity"] + "\n"
+            message_buffer += "FurAffinity: https://www.furaffinity.net/user/" + obj["social_media"]["furaffinity"] + "\n"
 
         if not has_game_account and not has_social_media_account:
             message_buffer = "Sorry, this user doesn't have a profile yet!"
@@ -559,7 +559,7 @@ async def on_message(message):
             return
 
         if command[1].startswith("http"):
-            username = command[1].split("/")[-1]
+            username = command[1].split("/")[-2]
         else:
             username = command[1]
 
@@ -689,7 +689,7 @@ async def on_message(message):
         TWITTER_URL = "https://www.twitter.com/"
         TWITCH_URL = "https://www.twitch.tv/"
         TELEGRAM_URL = "https://t.me/"
-        FUR_URL = "https://www.furafinity.net/user/"
+        FUR_URL = "https://www.furaffinity.net/user/"
         HT = "https://"
 
 
