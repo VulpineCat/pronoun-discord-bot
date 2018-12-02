@@ -30,6 +30,7 @@ ROLENAME_TWITTER = "Twitter"
 ROLENAME_TELEGRAM = "Telegram"
 ROLENAME_FACEBOOK = "Facebook"
 ROLENAME_TUMBLR = "Tumblr"
+ROLENAME_MASTO = "Mastodon"
 ROLENAME_YOUTUBE = "Youtube"
 ROLENAME_TWITCH = "Twitch"
 ROLENAME_DA = "deviantArt"
@@ -38,7 +39,7 @@ ROLENAME_FA = "FurAffinity"
 
 
 # JSON
-EMPTY_USER = {"games":{"steam": None,"switch": None,"3ds": None,"psn": None,"uplay": None,"origin": None,"xbox": None,"epic": None},"social_media":{"twitter": None,"facebook": None,"tumblr": None,"youtube": None,"deviantart": None,"etsy": None,"furaffinity": None,"telegram": None,"twitch": None}}
+EMPTY_USER = {"games":{"steam": None,"switch": None,"3ds": None,"psn": None,"uplay": None,"origin": None,"xbox": None,"epic": None},"social_media":{"twitter": None,"facebook": None,"tumblr": None, "mastodon": None, "youtube": None,"deviantart": None,"etsy": None,"furaffinity": None,"telegram": None,"twitch": None}}
 ##############################################################################
 
 CLIENT = discord.Client()
@@ -80,6 +81,7 @@ async def check_or_create_roles(server):
     await check_or_create_role(server, ROLENAME_TELEGRAM)
     await check_or_create_role(server, ROLENAME_FACEBOOK)
     await check_or_create_role(server, ROLENAME_TUMBLR)
+    await check_or_create_role(server, ROLENAME_MASTO)
     await check_or_create_role(server, ROLENAME_YOUTUBE)
     await check_or_create_role(server, ROLENAME_TWITCH)
     await check_or_create_role(server, ROLENAME_DA)
@@ -99,6 +101,7 @@ async def reset_roles(message):
     await remove_role_if_owned(message, ROLENAME_TELEGRAM)
     await remove_role_if_owned(message, ROLENAME_FACEBOOK)
     await remove_role_if_owned(message, ROLENAME_TUMBLR)
+    await remove_role_if_owned(message, ROLENAME_MASTO)
     await remove_role_if_owned(message, ROLENAME_YOUTUBE)
     await remove_role_if_owned(message, ROLENAME_TWITCH)
     await remove_role_if_owned(message, ROLENAME_DA)
@@ -198,6 +201,7 @@ async def on_message(message):
              "`Telegram                      -        add your telegram handle or url via !addtelegram or !atg`\n" +
              "`Facebook                      -        add your facebook profile !addfacebook or !afb`\n" +
              "`Tumblr                        -        add your tumblr blog with !addtumblr`\n" +
+             "`Mastodon                      -        add your mastodon with instance with !addmasto or !ama`\n" +
              "`Youtube                       -        add your channel with !addyoutube or !ayt`\n" +
              "`Twitch                        -        add your stream with !addtwitch`\n" +
              "`deviantArt                    -        add your dA page via !adddeviant or !ada`\n" +
@@ -300,6 +304,10 @@ async def on_message(message):
         if obj["social_media"]["tumblr"]:
             has_social_media_account = True
             message_buffer += "Tumblr: https://" + obj["social_media"]["tumblr"] + ".tumblr.com\n"
+
+        if obj["social_media"]["mastodon"]:
+            has_social_media_account = True
+            message_buffer += "Mastodon: " + obj["social_media"]["tumblr"]
 
         if obj["social_media"]["youtube"]:
             has_social_media_account = True
@@ -493,6 +501,21 @@ async def on_message(message):
 
         await CLIENT.send_message(message.channel, "Sorry, I don't really use Tumblr, so I don't have anything witty to say. Sucessfully saved!")
 
+    elif message.content.startswith("!addmasto") or message.content.startswith("!ama"):
+        command = message.content.split(" ")
+        username = None
+
+        if len(command) != 2:
+            return
+
+        username = command[1]
+
+        write_to_json(message.author.id, "social_media", "mastodon", username)
+        await add_role_if_missing(message, ROLENAME_MASTO)
+
+        await CLIENT.send_message(message.channel, "See you in the Fediverse!")
+
+
     elif message.content.startswith("!addyoutube") or message.content.startswith("!ayt"):
         command = message.content.split(" ")
 
@@ -643,6 +666,13 @@ async def on_message(message):
         await remove_role_if_owned(message, ROLENAME_TUMBLR)
 
         await CLIENT.send_message(message.channel, "Sucessfully deleted that entry!")
+
+    elif message.content.startswith("!delmasto") or message.content.startswith("!dma"):
+        write_to_json(message.author.id, "social_media", "mastodon", None)
+        await remove_role_if_owned(message, ROLENAME_MASTO)
+
+        await CLIENT.send_message(message.channel, "Sucessfully deleted that entry!")
+
 
     elif message.content.startswith("!delyoutube") or message.content.startswith("!dyt"):
         write_to_json(message.author.id, "social_media", "youtube", None)
