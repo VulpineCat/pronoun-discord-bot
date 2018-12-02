@@ -209,7 +209,7 @@ async def on_message(message):
              "`FurAffinity                   -        add your sins via !addfur or !afa`\n\n\n" +
              "To delete any entry type `!del[command]`, so for example `!delsteam` or `!delfur`. `!dfb` also works to delete facebook, and so on.\n" +
              "`!delall` will delete your **entire** profile!\n\n\n" +
-             "Anything else you need? Hit up my *owner* at VulpineCat#0001 or `hello@vulpinecat.com`\n\n" +
+             "Anything else you need? Hit up my *owner* at Praxis#0001 or `hello@vulpinecat.com`\n\n" +
              "Love You\n- ***Unmisgenderfyer***"
             ))
 
