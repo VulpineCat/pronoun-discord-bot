@@ -115,7 +115,6 @@ def validate_users_json(server):
 
     for member in server.members:
         if member.id in obj:
-            obj[member.id]["social_media"]["mastodon"] = None
             continue
         else:
             obj[member.id] = EMPTY_USER
@@ -308,7 +307,7 @@ async def on_message(message):
 
         if obj["social_media"]["mastodon"]:
             has_social_media_account = True
-            message_buffer += "Mastodon: " + obj["social_media"]["tumblr"]
+            message_buffer += "Mastodon: " + obj["social_media"]["mastodon"]
 
         if obj["social_media"]["youtube"]:
             has_social_media_account = True
