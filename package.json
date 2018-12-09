@@ -1,0 +1,29 @@
+{
+  "name": "pronoun-discord-bot",
+  "version": "0.1.0",
+  "description": "A discord bot that helps users prevent misgendering, as well as let's users create a profile",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/good-praxis/pronoun-discord-bot.git"
+  },
+  "author": "Praxis",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/good-praxis/pronoun-discord-bot/issues"
+  },
+  "homepage": "https://github.com/good-praxis/pronoun-discord-bot#readme",
+  "dependencies": {
+    "bufferutil": "^3.0.5",
+    "discord.js": "^11.4.2",
+    "erlpack": "github:discordapp/erlpack",
+    "libsodium-wrappers": "^0.7.3",
+    "node-opus": "^0.2.9",
+    "opusscript": "0.0.6",
+    "sodium": "^2.0.3",
+    "uws": "^9.148.0"
+  }
+}
