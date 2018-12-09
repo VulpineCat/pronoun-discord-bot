@@ -19,6 +19,7 @@
   "dependencies": {
     "bufferutil": "^3.0.5",
     "discord.js": "^11.4.2",
+    "dotenv": "^6.2.0",
     "erlpack": "github:discordapp/erlpack",
     "libsodium-wrappers": "^0.7.3",
     "lokijs": "^1.5.5",
