@@ -21,7 +21,7 @@
     "discord.js": "^11.4.2",
     "dotenv": "^6.2.0",
     "erlpack": "github:discordapp/erlpack",
-    "libsodium-wrappers": "^0.7.3",
+    "libsodium-wrappers": "^0.7.4",
     "lokijs": "^1.5.5",
     "node-opus": "^0.2.9",
     "opusscript": "0.0.6",
