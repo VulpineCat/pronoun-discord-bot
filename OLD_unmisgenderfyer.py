@@ -6,16 +6,19 @@ from dotenv import load_dotenv
 
 ENV_PATH = Path('.') / '.env'
 load_dotenv(dotenv_path=ENV_PATH)
+# This solution is unreliable. I should assume the token is already in the environment. TODO: Remove .env
 
 ##############################################################################
+# TODO: I call the bot with the API token as a parameter, allows integration tests
 API_TOKEN = os.getenv("API_TOKEN")
 
-# Gender
+
+# Gender TODO: Move to be a class + subclasses
 ROLENAME_HE = "He/Him"
 ROLENAME_SHE = "She/Her"
 ROLENAME_THEY = "They/Them"
 
-# Games
+# Games TODO: Move to be a class + subclasses
 ROLENAME_STEAM = "Steam"
 ROLENAME_SWITCH = "Nintendo Switch"
 ROLENAME_3DS = "Nintendo 3DS"
@@ -25,7 +28,7 @@ ROLENAME_ORIGIN = "Origin"
 ROLENAME_XBOX = "Xbox"
 ROLENAME_EPIC = "Epic Games"
 
-# Social Media
+# Social Media TODO: Move to be a class + subclasses
 ROLENAME_TWITTER = "Twitter"
 ROLENAME_TELEGRAM = "Telegram"
 ROLENAME_FACEBOOK = "Facebook"
@@ -39,10 +42,12 @@ ROLENAME_FA = "FurAffinity"
 
 
 # JSON
+# TODO: Remove this from here, later: Switch to something that isn't JSON for more control
 EMPTY_USER = {"games":{"steam": None,"switch": None,"3ds": None,"psn": None,"uplay": None,"origin": None,"xbox": None,"epic": None},"social_media":{"twitter": None,"facebook": None,"tumblr": None, "mastodon": None, "youtube": None,"deviantart": None,"etsy": None,"furaffinity": None,"telegram": None,"twitch": None}}
 ##############################################################################
 
 CLIENT = discord.Client()
+# Woudn't it make more sense to have the interacting class be a subclass of discord client, to avoid this overhead?
 
 async def check_or_create_role(server, rolename):
     found = False
@@ -109,6 +114,7 @@ async def reset_roles(message):
     await remove_role_if_owned(message, ROLENAME_FA)
 
 def validate_users_json(server):
+    # TODO: this sets up new user fields in the json, but doesn't remove outdated ones. Move and make more explicit
     obj = None
     with open('data.json', 'r') as file:
         obj = json.loads(file.read())
@@ -177,6 +183,7 @@ async def on_message(message):
     if not message.content.startswith('!'):
         return
 
+    # Oh jeez... I really need to do something about this
     elif message.content == '!help' or message.content == '!list':
         await CLIENT.send_message(
             message.channel,
