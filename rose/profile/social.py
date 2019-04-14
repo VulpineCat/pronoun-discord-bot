@@ -1,7 +1,7 @@
 class TwitterProfileField:
     def __init__(self, value):
-        _KEY = "Twitter"
-        _username = self.extract_username(value)
+        self._KEY = "Twitter"
+        self._username = self.extract_username(value)
 
     @property
     def username(self):
@@ -17,4 +17,5 @@ class TwitterProfileField:
         self._username = self.extract_username(self, value)
 
     def extract_username(self, value):
-        return ""
+        import re
+        return re.findall(r'\w+\\?$', value)[0]
