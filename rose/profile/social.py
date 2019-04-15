@@ -1,11 +1,15 @@
-class TwitterProfileField:
-    def __init__(self, value):
-        self._KEY = "Twitter"
+import re
+
+
+class ProfileField:
+    def __init__(self, key=None, value=None, extract_pattern=r'\w*'):
+        self._KEY = key
+        self._EXTRACT_PATTERN = extract_pattern
         self._username = self.extract_username(value)
 
     @property
     def username(self):
-        """Username on Twitter"""
+        """Username on platform"""
         return self._username
 
     @username.getter
@@ -14,50 +18,31 @@ class TwitterProfileField:
 
     @username.setter
     def username(self, value):
-        self._username = self.extract_username(self, value)
-
-    @property
-    def url(self):
-        """URL to profile on Twitter"""
-        return 'https://twitter.com/{}'.format(self._username)
-
-    @property
-    def flavour_text(self):
-        """Flavour text of service"""
-        return ":bird: Tweet Tweet :bird:"
-
-    def extract_username(self, value):
-        import re
-        return re.findall(r'(\w+$|\w+(?=/?$))', value)[0]
-
-class TelegramProfileField:
-    def __init__(self, value):
-        self._KEY = "Telegram"
         self._username = self.extract_username(value)
 
     @property
-    def username(self):
-        """Username on Telegram"""
-        return self._username
-
-    @username.getter
-    def username(self):
-        return self._username
-
-    @username.setter
-    def username(self, value):
-        self._username = self.extract_username(self, value)
+    def flavour_text(self):
+        """Flavour text of service"""
+        return self._FLAVOUR_TEXT
 
     @property
     def url(self):
-        """URL to profile on Telegram"""
-        return 'https://t.me/{}'.format(self._username)
-
-    @property
-    def flavour_text(self):
-        """Flavour text of service"""
-        return "Have fun chatting!"
+        """URL to profile on profile"""
+        return self._URL.format(self._username)
 
     def extract_username(self, value):
-        import re
-        return re.findall(r'(\w+$|\w+(?=/?$))', value)[0]
+        return re.findall(self._EXTRACT_PATTERN, value)[0]
+
+
+class TwitterProfileField(ProfileField):
+    def __init__(self, value):
+        super().__init__("Twitter", value, r'(\w+$|\w+(?=/?$))')
+        self._FLAVOUR_TEXT = ":bird: Tweet Tweet :bird:"
+        self._URL = "https://twitter.com/{}"
+
+
+class TelegramProfileField(ProfileField):
+    def __init__(self, value):
+        super().__init__("Telegram", value, r'(\w+$|\w+(?=/?$))')
+        self._FLAVOUR_TEXT = "Have fun chatting!"
+        self._URL = "https://t.me/{}"
