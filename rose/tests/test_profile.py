@@ -94,3 +94,10 @@ class TestProfileFields(object):
             profile_field = social.YoutubeProfileField("https://www.youtube.com/channel/UC6FHHzDg0lRAQ2Rw5ESNz_g?view_as=subscriber")
             assert profile_field.username == "UC6FHHzDg0lRAQ2Rw5ESNz_g"
 
+        def test_twitch_field(self):
+            profile_field = social.TwitchProfileField("https://www.twitch.tv/good_praxis")
+            assert profile_field._KEY == "Twitch"
+            assert profile_field.flavour_text == ":play_pause: Stream On!"
+            assert profile_field.username == "good_praxis"
+            assert profile_field.url == "https://www.twitch.tv/good_praxis"
+

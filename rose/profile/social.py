@@ -57,7 +57,7 @@ class FacebookProfileField(ProfileField):
 
 class TumblrProfileField(ProfileField):
     def __init__(self, value):
-        super().__init__("Tumblr", value, r'(?:http[s]?://)(\w+)')
+        super().__init__("Tumblr", value, r'(?:http[s]?://)?(\w+)')
         self._FLAVOUR_TEXT = "Let's keep it rolling!"
         self._URL = "https://{}.tumblr.com/"
 
@@ -67,3 +67,10 @@ class YoutubeProfileField(ProfileField):
         super().__init__("Youtube", value, r'(?:/)(\w+)(?:\?.*)*$')
         self._FLAVOUR_TEXT = ":play_pause: We'll get people to smash that subscribe button before long! :raised_hands:"
         self._URL = "https://www.youtube.com/channel/{}"
+
+
+class TwitchProfileField(ProfileField):
+    def __init__(self, value):
+        super().__init__("Twitch", value, r'(\w+$|\w+(?=/?$))')
+        self._FLAVOUR_TEXT = ":play_pause: Stream On!"
+        self._URL = "https://www.twitch.tv/{}"
