@@ -61,6 +61,8 @@ class TestProfileFields(object):
             with pytest.raises(TypeError):
                 telegram_profile = social.TelegramProfileField()
 
+    # TODO: Mastodon testsuite, testing the link, the @user@instance and user@instance formats
+
     class TestOtherFields:
         def test_facebook_field(self):
             profile_field = social.FacebookProfileField("https://www.facebook.com/zuck")
@@ -80,3 +82,15 @@ class TestProfileFields(object):
             assert profile_field.flavour_text == "Let's keep it rolling!"
             assert profile_field.username == "littleanimalgifs"
             assert profile_field.url == "https://littleanimalgifs.tumblr.com/"
+
+        def test_youtube_field(self):
+            profile_field = social.YoutubeProfileField("https://www.youtube.com/channel/UC6FHHzDg0lRAQ2Rw5ESNz_g")
+            assert profile_field._KEY == "Youtube"
+            assert profile_field.flavour_text == ":play_pause: We'll get people to smash that subscribe button before long! :raised_hands:"
+            assert profile_field.username == "UC6FHHzDg0lRAQ2Rw5ESNz_g"
+            assert profile_field.url == "https://www.youtube.com/channel/UC6FHHzDg0lRAQ2Rw5ESNz_g"
+
+        def test_youtube_field_with_url_parameters(self):
+            profile_field = social.YoutubeProfileField("https://www.youtube.com/channel/UC6FHHzDg0lRAQ2Rw5ESNz_g?view_as=subscriber")
+            assert profile_field.username == "UC6FHHzDg0lRAQ2Rw5ESNz_g"
+
