@@ -16,6 +16,16 @@ class TwitterProfileField:
     def username(self, value):
         self._username = self.extract_username(self, value)
 
+    @property
+    def url(self):
+        """URL to profile on Twitter"""
+        return 'https://twitter.com/{}'.format(self._username)
+
+    @property
+    def flavour_text(self):
+        """Flavour text of service"""
+        return ":bird: Tweet Tweet :bird:"
+
     def extract_username(self, value):
         import re
-        return re.findall(r'\w+\\?$', value)[0]
+        return re.findall(r'(\w+$|\w+(?=/?$))', value)[0]
