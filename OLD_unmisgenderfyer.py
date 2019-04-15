@@ -43,7 +43,8 @@ ROLENAME_FA = "FurAffinity"
 
 # JSON
 # TODO: Remove this from here, later: Switch to something that isn't JSON for more control
-EMPTY_USER = {"games":{"steam": None,"switch": None,"3ds": None,"psn": None,"uplay": None,"origin": None,"xbox": None,"epic": None},"social_media":{"twitter": None,"facebook": None,"tumblr": None, "mastodon": None, "youtube": None,"deviantart": None,"etsy": None,"furaffinity": None,"telegram": None,"twitch": None}}
+EMPTY_USER = {"games":{"steam": None,"switch": None,"3ds": None,"psn": None,"uplay": None,"origin": None,"xbox": None,"epic": None},
+              "social_media":{"twitter": None,"facebook": None,"tumblr": None, "mastodon": None, "youtube": None,"deviantart": None,"etsy": None,"furaffinity": None,"telegram": None,"twitch": None}}
 ##############################################################################
 
 CLIENT = discord.Client()

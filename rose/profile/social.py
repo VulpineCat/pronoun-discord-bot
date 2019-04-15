@@ -46,3 +46,18 @@ class TelegramProfileField(ProfileField):
         super().__init__("Telegram", value, r'(\w+$|\w+(?=/?$))')
         self._FLAVOUR_TEXT = "Have fun chatting!"
         self._URL = "https://t.me/{}"
+
+
+class FacebookProfileField(ProfileField):
+    def __init__(self, value):
+        super().__init__("Facebook", value, r'([\w.]+$|[\w.]+(?=/?$))')
+        self._FLAVOUR_TEXT = ":eyes: Mark will be watching"
+        self._URL = "https://www.facebook.com/{}"
+
+
+class TumblrProfileField(ProfileField):
+    def __init__(self, value):
+        super().__init__("Tumblr", value, r'(?:http[s]?://)(\w+)')
+        self._FLAVOUR_TEXT = "Let's keep it rolling!"
+        self._URL = "https://{}.tumblr.com/"
+        

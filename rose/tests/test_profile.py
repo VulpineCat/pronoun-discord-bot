@@ -61,3 +61,22 @@ class TestProfileFields(object):
             with pytest.raises(TypeError):
                 telegram_profile = social.TelegramProfileField()
 
+    class TestOtherFields:
+        def test_facebook_field(self):
+            profile_field = social.FacebookProfileField("https://www.facebook.com/zuck")
+            assert profile_field._KEY == "Facebook"
+            assert profile_field.flavour_text == ":eyes: Mark will be watching"
+            assert profile_field.username == "zuck"
+            assert profile_field.url == "https://www.facebook.com/zuck"
+
+        def test_facebook_field_long_name(self):
+            profile_field = social.FacebookProfileField("https://www.facebook.com/Karl.Marx.Marxism")
+            assert profile_field.username == "Karl.Marx.Marxism"
+            assert profile_field.url == "https://www.facebook.com/Karl.Marx.Marxism"
+
+        def test_tumblr_field(self):
+            profile_field = social.TumblrProfileField("https://littleanimalgifs.tumblr.com/")
+            assert profile_field._KEY == "Tumblr"
+            assert profile_field.flavour_text == "Let's keep it rolling!"
+            assert profile_field.username == "littleanimalgifs"
+            assert profile_field.url == "https://littleanimalgifs.tumblr.com/"
