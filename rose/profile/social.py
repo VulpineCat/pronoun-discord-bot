@@ -2,7 +2,7 @@ import re
 
 
 class ProfileField:
-    def __init__(self, key=None, value=None, extract_pattern=r'\w*'):
+    def __init__(self, key=None, value=None, extract_pattern=r'(\w+$|\w+(?=/?$))'):
         self._KEY = key
         self._EXTRACT_PATTERN = extract_pattern
         self._username = self.extract_username(value)
@@ -36,14 +36,14 @@ class ProfileField:
 
 class TwitterProfileField(ProfileField):
     def __init__(self, value):
-        super().__init__("Twitter", value, r'(\w+$|\w+(?=/?$))')
+        super().__init__("Twitter", value)
         self._FLAVOUR_TEXT = ":bird: Tweet Tweet :bird:"
         self._URL = "https://twitter.com/{}"
 
 
 class TelegramProfileField(ProfileField):
     def __init__(self, value):
-        super().__init__("Telegram", value, r'(\w+$|\w+(?=/?$))')
+        super().__init__("Telegram", value)
         self._FLAVOUR_TEXT = "Have fun chatting!"
         self._URL = "https://t.me/{}"
 
@@ -71,13 +71,20 @@ class YoutubeProfileField(ProfileField):
 
 class TwitchProfileField(ProfileField):
     def __init__(self, value):
-        super().__init__("Twitch", value, r'(\w+$|\w+(?=/?$))')
+        super().__init__("Twitch", value)
         self._FLAVOUR_TEXT = ":play_pause: Stream On!"
         self._URL = "https://www.twitch.tv/{}"
 
 
 class DeviantArtProfileField(ProfileField):
     def __init__(self, value):
-        super().__init__("DeviantArt", value, r'(\w+$|\w+(?=/?$))')
+        super().__init__("DeviantArt", value)
         self._FLAVOUR_TEXT = "Whether :paintbrush: or :writing_hand:, we too appreciate art here~!"
         self._URL = "https://www.deviantart.com/{}"
+
+class EtsyProfileField(ProfileField):
+    def __init__(self, value):
+        super().__init__("Etsy", value, r'(?:/)(\w+)(?:\?.*)*$')
+        self._FLAVOUR_TEXT = ":money_with_wings: One of your best merch, please! :money_with_wings:"
+        self._URL = "https://www.etsy.com/shop/{}"
+        

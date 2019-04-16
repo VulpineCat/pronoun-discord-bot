@@ -107,3 +107,10 @@ class TestProfileFields(object):
             assert profile_field.flavour_text == "Whether :paintbrush: or :writing_hand:, we too appreciate art here~!"
             assert profile_field.username == "spyed"
             assert profile_field.url == "https://www.deviantart.com/spyed"
+
+        def test_etsy_field(self):
+            profile_field = social.EtsyProfileField("https://www.etsy.com/shop/404")
+            assert profile_field._KEY == "Etsy"
+            assert profile_field.flavour_text == ":money_with_wings: One of your best merch, please! :money_with_wings:"
+            assert profile_field.username == "404"
+            assert profile_field.url == "https://www.etsy.com/shop/404"
