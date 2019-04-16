@@ -27,11 +27,50 @@ class ProfileField:
 
     @property
     def url(self):
-        """URL to profile on profile"""
+        """URL to profile on service"""
         return self._URL.format(self._username)
 
     def extract_username(self, value):
         return re.findall(self._EXTRACT_PATTERN, value)[0]
+
+
+class MastodonProfileField(ProfileField):
+    def __init__(self, value):
+        super().__init__("Mastodon", value)
+        self._FLAVOUR_TEXT = "See you in the Fediverse!"
+        self._URL = "https://{}/@{}"
+        self._instance = self.extract_instance(value)
+
+    @property
+    def username(self):
+        """Instance and Username on Mastodon"""
+        return (self._username + '@' + self._instance)
+
+    @username.getter
+    def username(self):
+        return (self._username + '@' + self._instance)
+
+    @username.setter
+    def username(self, value):
+        self._username = self.extract_username(value)
+        self._instance = self.extract_instance(value)
+
+    @property
+    def url(self):
+        """URL to profile on mastodon instance"""
+        return self._URL.format(self._instance, self._username)
+
+    def extract_username(self, value):  #FIXME this code is kind of sad, maybe
+        if re.findall(r'^(?:@?)(\w+)(?:@)', value):
+            return re.findall(r'^(?:@?)(\w+)', value)[0]
+        else:
+            return re.findall(r'(\w+$|\w+(?=/?$))', value)[0]
+
+    def extract_instance(self, value):
+        if re.findall(r'(?://)(.*)(?:/)', value):
+            return re.findall(r'(?://)(.*)(?:/)', value)[0]
+        else:
+            return re.findall(r'(?:@)(\w+\.\w+)$', value)[0]
 
 
 class TwitterProfileField(ProfileField):
@@ -82,9 +121,16 @@ class DeviantArtProfileField(ProfileField):
         self._FLAVOUR_TEXT = "Whether :paintbrush: or :writing_hand:, we too appreciate art here~!"
         self._URL = "https://www.deviantart.com/{}"
 
+
 class EtsyProfileField(ProfileField):
     def __init__(self, value):
         super().__init__("Etsy", value, r'(?:/)(\w+)(?:\?.*)*$')
         self._FLAVOUR_TEXT = ":money_with_wings: One of your best merch, please! :money_with_wings:"
         self._URL = "https://www.etsy.com/shop/{}"
-        
+
+
+class FuraffinityProfileField(ProfileField):
+    def __init__(self, value):
+        super().__init__("Furaffinity", value)
+        self._FLAVOUR_TEXT = ":cat: :dog: :bird: :crocodile: uwu"
+        self._URL = "https://www.furaffinity.net/user/{}/"

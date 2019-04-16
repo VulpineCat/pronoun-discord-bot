@@ -5,63 +5,81 @@ import rose.profile.social as social
 class TestProfileFields(object):
     class TestTwitterField:
         def test_twitter_url(self):
-            twitter_profile = social.TwitterProfileField("https://twitter.com/real_praxis")
-            assert twitter_profile.username == "real_praxis"
+            profile_field = social.TwitterProfileField("https://twitter.com/real_praxis")
+            assert profile_field.username == "real_praxis"
 
         def test_twitter_odd_url(self):
-            twitter_profile = social.TwitterProfileField("https://twitter.com/real_praxis/")
-            assert twitter_profile.username == "real_praxis"
+            profile_field = social.TwitterProfileField("https://twitter.com/real_praxis/")
+            assert profile_field.username == "real_praxis"
 
         def test_twitter_at(self):
-            twitter_profile = social.TwitterProfileField("@real_praxis")
-            assert twitter_profile.username == "real_praxis"
+            profile_field = social.TwitterProfileField("@real_praxis")
+            assert profile_field.username == "real_praxis"
 
         def test_twitter_username(self):
-            twitter_profile = social.TwitterProfileField("real_praxis")
-            assert twitter_profile.username == "real_praxis"
+            profile_field = social.TwitterProfileField("real_praxis")
+            assert profile_field.username == "real_praxis"
 
         def test_twitter_generate_url(self):
-            twitter_profile = social.TwitterProfileField("real_praxis")
-            assert twitter_profile.url == "https://twitter.com/real_praxis"
+            profile_field = social.TwitterProfileField("real_praxis")
+            assert profile_field.url == "https://twitter.com/real_praxis"
 
         def test_twitter_flavour_text(self):
-            twitter_profile = social.TwitterProfileField("real_praxis")
-            assert twitter_profile.flavour_text == ":bird: Tweet Tweet :bird:"
+            profile_field = social.TwitterProfileField("real_praxis")
+            assert profile_field.flavour_text == ":bird: Tweet Tweet :bird:"
 
         def test_twitter_empty_input(self):
             with pytest.raises(TypeError):
-                twitter_profile = social.TwitterProfileField()
+                profile_field = social.TwitterProfileField()
 
     class TestTelegramField:
         def test_telegram_url(self):
-            telegram_profile = social.TelegramProfileField("https://t.me/good_praxis")
-            assert telegram_profile.username == "good_praxis"
+            profile_field = social.TelegramProfileField("https://t.me/good_praxis")
+            assert profile_field.username == "good_praxis"
 
         def test_telegram_odd_url(self):
-            telegram_profile = social.TelegramProfileField("https://t.me/good_praxis/")
-            assert telegram_profile.username == "good_praxis"
+            profile_field = social.TelegramProfileField("https://t.me/good_praxis/")
+            assert profile_field.username == "good_praxis"
 
         def test_telegram_at(self):
-            telegram_profile = social.TelegramProfileField("@good_praxis")
-            assert telegram_profile.username == "good_praxis"
+            profile_field = social.TelegramProfileField("@good_praxis")
+            assert profile_field.username == "good_praxis"
 
         def test_telegram_username(self):
-            telegram_profile = social.TelegramProfileField("good_praxis")
-            assert telegram_profile.username == "good_praxis"
+            profile_field = social.TelegramProfileField("good_praxis")
+            assert profile_field.username == "good_praxis"
 
         def test_telegram_generate_url(self):
-            telegram_profile = social.TelegramProfileField("good_praxis")
-            assert telegram_profile.url == "https://t.me/good_praxis"
+            profile_field = social.TelegramProfileField("good_praxis")
+            assert profile_field.url == "https://t.me/good_praxis"
 
         def test_telegram_flavour_text(self):
-            telegram_profile = social.TelegramProfileField("good_praxis")
-            assert telegram_profile.flavour_text == "Have fun chatting!"
+            profile_field = social.TelegramProfileField("good_praxis")
+            assert profile_field.flavour_text == "Have fun chatting!"
 
         def test_telegram_empty_input(self):
             with pytest.raises(TypeError):
-                telegram_profile = social.TelegramProfileField()
+                profile_field = social.TelegramProfileField()
 
-    # TODO: Mastodon testsuite, testing the link, the @user@instance and user@instance formats
+
+    class TestMastodonField:
+        def test_mastodon_url(self):
+            profile_field = social.MastodonProfileField("https://vulpine.club/@praxis")
+            assert profile_field.username == "praxis@vulpine.club"
+            assert profile_field._username == "praxis"
+            assert profile_field._instance == "vulpine.club"
+
+        def test_mastodon_username_preceeding_at(self):
+            profile_field = social.MastodonProfileField("@praxis@vulpine.club")
+            assert profile_field.username == "praxis@vulpine.club"
+            assert profile_field.url == "https://vulpine.club/@praxis"
+
+        def test_mastodon_username_without_preceeding_at(self):
+            profile_field = social.MastodonProfileField("praxis@vulpine.club")
+            assert profile_field.username == "praxis@vulpine.club"
+            assert profile_field.url == "https://vulpine.club/@praxis"
+
+
 
     class TestOtherFields:
         def test_facebook_field(self):
@@ -114,3 +132,14 @@ class TestProfileFields(object):
             assert profile_field.flavour_text == ":money_with_wings: One of your best merch, please! :money_with_wings:"
             assert profile_field.username == "404"
             assert profile_field.url == "https://www.etsy.com/shop/404"
+
+        def test_etsy_field_with_url_parameters(self):
+            profile_field = social.EtsyProfileField("https://www.etsy.com/shop/404?ref=simple-shop-header-name&listing_id=473799330")
+            assert profile_field.username == "404"
+
+        def test_furaffinity_field(self):
+            profile_field = social.FuraffinityProfileField("https://www.furaffinity.net/user/vulpinecat/")
+            assert profile_field._KEY == "Furaffinity"
+            assert profile_field.flavour_text == ":cat: :dog: :bird: :crocodile: uwu"
+            assert profile_field.username == "vulpinecat"
+            assert profile_field.url == "https://www.furaffinity.net/user/vulpinecat/"
