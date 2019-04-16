@@ -74,3 +74,10 @@ class TwitchProfileField(ProfileField):
         super().__init__("Twitch", value, r'(\w+$|\w+(?=/?$))')
         self._FLAVOUR_TEXT = ":play_pause: Stream On!"
         self._URL = "https://www.twitch.tv/{}"
+
+
+class DeviantArtProfileField(ProfileField):
+    def __init__(self, value):
+        super().__init__("DeviantArt", value, r'(\w+$|\w+(?=/?$))')
+        self._FLAVOUR_TEXT = "Whether :paintbrush: or :writing_hand:, we too appreciate art here~!"
+        self._URL = "https://www.deviantart.com/{}"

@@ -101,3 +101,9 @@ class TestProfileFields(object):
             assert profile_field.username == "good_praxis"
             assert profile_field.url == "https://www.twitch.tv/good_praxis"
 
+        def test_deviant_art_field(self):
+            profile_field = social.DeviantArtProfileField("https://www.deviantart.com/spyed")
+            assert profile_field._KEY == "DeviantArt"
+            assert profile_field.flavour_text == "Whether :paintbrush: or :writing_hand:, we too appreciate art here~!"
+            assert profile_field.username == "spyed"
+            assert profile_field.url == "https://www.deviantart.com/spyed"
