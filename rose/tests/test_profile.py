@@ -65,18 +65,17 @@ class TestProfileFields(object):
     class TestMastodonField:
         def test_mastodon_url(self):
             profile_field = social.MastodonProfileField("https://vulpine.club/@praxis")
-            assert profile_field.username == "praxis@vulpine.club"
-            assert profile_field._username == "praxis"
-            assert profile_field._instance == "vulpine.club"
+            assert profile_field.username == "praxis"
+            assert profile_field.domain == "vulpine.club"
 
         def test_mastodon_username_preceeding_at(self):
             profile_field = social.MastodonProfileField("@praxis@vulpine.club")
-            assert profile_field.username == "praxis@vulpine.club"
+            assert profile_field.username == "praxis"
             assert profile_field.url == "https://vulpine.club/@praxis"
 
         def test_mastodon_username_without_preceeding_at(self):
             profile_field = social.MastodonProfileField("praxis@vulpine.club")
-            assert profile_field.username == "praxis@vulpine.club"
+            assert profile_field.username == "praxis"
             assert profile_field.url == "https://vulpine.club/@praxis"
 
 

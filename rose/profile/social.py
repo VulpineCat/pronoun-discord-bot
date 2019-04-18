@@ -34,43 +34,57 @@ class ProfileField:
         return re.findall(self._EXTRACT_PATTERN, value)[0]
 
 
-class MastodonProfileField(ProfileField):
-    def __init__(self, value):
-        super().__init__("Mastodon", value)
-        self._FLAVOUR_TEXT = "See you in the Fediverse!"
-        self._URL = "https://{}/@{}"
-        self._instance = self.extract_instance(value)
+class DomainProfileField(ProfileField):
+    def __init__(self, key=None, value=None, extract_pattern_list=[r'(\w+$|\w+(?=/?$))']):
+        self._EXTRACT_PATTERN_LIST = extract_pattern_list
+        super().__init__(key, value)
+        self._user_data = self.extract_user_data(value)
 
     @property
     def username(self):
-        """Instance and Username on Mastodon"""
-        return (self._username + '@' + self._instance)
+        return self._user_data["username"]
 
     @username.getter
     def username(self):
-        return (self._username + '@' + self._instance)
+        return self._user_data["username"]
 
     @username.setter
     def username(self, value):
-        self._username = self.extract_username(value)
-        self._instance = self.extract_instance(value)
+        self._user_data = self.extract_username(value)
+
+    @property
+    def domain(self):
+        """Domain which user uses"""
+        return self._user_data["domain"]
+
+    @domain.getter
+    def domain(self):
+        return self._user_data["domain"]
+
+    @domain.setter
+    def domain(self, value):
+        self._user_data,  = self.extract_username(value)
 
     @property
     def url(self):
-        """URL to profile on mastodon instance"""
-        return self._URL.format(self._instance, self._username)
+        """URL to profile on domain"""
+        return self._URL.format(self._user_data["domain"], self._user_data["username"])
 
-    def extract_username(self, value):  #FIXME this code is kind of sad, maybe
-        if re.findall(r'^(?:@?)(\w+)(?:@)', value):
-            return re.findall(r'^(?:@?)(\w+)', value)[0]
-        else:
-            return re.findall(r'(\w+$|\w+(?=/?$))', value)[0]
+    def extract_user_data(self, value):
+        for pattern in self._EXTRACT_PATTERN_LIST:
+            if re.match(pattern, value):
+                return re.match(pattern, value).groupdict()
+        raise ValueError
 
-    def extract_instance(self, value):
-        if re.findall(r'(?://)(.*)(?:/)', value):
-            return re.findall(r'(?://)(.*)(?:/)', value)[0]
-        else:
-            return re.findall(r'(?:@)(\w+\.\w+)$', value)[0]
+
+class MastodonProfileField(DomainProfileField):
+    def __init__(self, value):
+        super().__init__("Mastodon",
+                         value,
+                         [r'^((?:http(?:s)?://(?:www\.)?)?(?P<domain>\w+\.\w+)/@)(?P<username>\w+)',
+                          r'^(?:@?)(?P<username>\w+)(?:@)(?P<domain>\w+\.\w+)'])
+        self._FLAVOUR_TEXT = "See you in the Fediverse!"
+        self._URL = "https://{}/@{}"
 
 
 class TwitterProfileField(ProfileField):
