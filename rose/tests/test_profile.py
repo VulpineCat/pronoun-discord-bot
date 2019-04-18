@@ -82,6 +82,7 @@ class TestProfileFields(object):
         def test_mastodon_flavour_text(self):
             profile_field = social.MastodonProfileField("praxis@vulpine.club")
             assert profile_field.flavour_text == "See you in the Fediverse!"
+            assert profile_field._KEY == "Mastodon"
 
     class TestSteamField:
         def test_steam_id_url(self):
@@ -98,7 +99,8 @@ class TestProfileFields(object):
 
         def test_steam_flavour_text(self):
             profile_field = social.SteamProfileField("https://steamcommunity.com/id/PraxisCat/")
-            assert profile_field.flavour_text == ":joystick: Full *Steam* Ahead!\nGet it?"
+            assert profile_field.flavour_text == """:joystick: Full *Steam* Ahead!\nGet it?"""
+            assert profile_field._KEY == "Steam"
 
     class TestOtherFields:
         def test_facebook_field(self):
@@ -166,3 +168,12 @@ class TestProfileFields(object):
             assert profile_field.flavour_text == ":cat: :dog: :bird: :crocodile: uwu"
             assert profile_field.username == "vulpinecat"
             assert profile_field.url == "https://www.furaffinity.net/user/vulpinecat/"
+
+        def test_switch_field(self):
+            profile_field = social.SwitchProfileField("SW-0000-0000-0000")
+            assert profile_field._KEY == "Switch"
+            assert profile_field.flavour_text == ":joy: :spy: Get it? It's a ***joy con***"
+            assert profile_field.username == "SW-0000-0000-0000"
+            assert profile_field.url == "SW-0000-0000-0000"
+
+            

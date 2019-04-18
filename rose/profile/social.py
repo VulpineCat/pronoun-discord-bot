@@ -74,7 +74,7 @@ class SteamProfileField(DomainProfileField):
     def __init__(self, value):
         super().__init__("Steam",
                          value,
-                         [r'(?:[\w:/\.]+)/(?P<domain>\w+)/(?P<username>\w+)/?'])
+                         [r'^(?:[\w:/\.]+)/(?P<domain>\w+)/(?P<username>\w+)/?$'])
         self._FLAVOUR_TEXT = ":joystick: Full *Steam* Ahead!\nGet it?"
         self._URL = "https://steamcommunity.com/{}/{}/"
 
@@ -140,3 +140,9 @@ class FuraffinityProfileField(ProfileField):
         super().__init__("Furaffinity", value)
         self._FLAVOUR_TEXT = ":cat: :dog: :bird: :crocodile: uwu"
         self._URL = "https://www.furaffinity.net/user/{}/"
+
+class SwitchProfileField(ProfileField):
+    def __init__(self, value):
+        super().__init__("Switch", value, [r'(?P<username>[\w-]+)'])
+        self._FLAVOUR_TEXT = ":joy: :spy: Get it? It's a ***joy con***"
+        self._URL = "{}"
