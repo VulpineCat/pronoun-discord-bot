@@ -36,6 +36,37 @@ class DSProfileField(SimpleProfileField):
         self._FLAVOUR_TEXT = "Happy Gaming!"
 
 
+class PlaystationProfileField(SimpleProfileField):
+    def __init__(self, value):
+        super().__init__("Playstation", value)
+        self._FLAVOUR_TEXT = "BE MOVED"
+
+
+class XBoxProfileField(SimpleProfileField):
+    def __init__(self, value):
+        super().__init__("XBox", value)
+        self._FLAVOUR_TEXT = "added your :regional_indicator_x::regional_indicator_b:" \
+                             ":regional_indicator_o::negative_squared_cross_mark:!"
+
+
+class UbisoftProfileField(SimpleProfileField):
+    def __init__(self, value):
+        super().__init__("Ubisoft", value)
+        self._FLAVOUR_TEXT = "Glad to have your username there! ~~At least it's not origin!~~"
+
+
+class OriginProfileField(SimpleProfileField):
+    def __init__(self, value):
+        super().__init__("Origin", value)
+        self._FLAVOUR_TEXT = "Glad to have your username there! ~~At least it's not uplay!~~"
+
+
+class EpicProfileField(SimpleProfileField):
+    def __init__(self, value):
+        super().__init__("Epic", value)
+        self._FLAVOUR_TEXT = "What do ya say? Fortnite 2nite?"
+
+
 class ProfileField(SimpleProfileField):
     def __init__(self, key=None, value=None, extract_pattern_list=[r'^(?:(?:.*?/?@?))(?P<username>\w+)(?:/?)$']):
         super().__init__(key)

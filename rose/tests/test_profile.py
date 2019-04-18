@@ -180,3 +180,34 @@ class TestProfileFields(object):
             assert profile_field._KEY == "3DS"
             assert profile_field.flavour_text == "Happy Gaming!"
             assert profile_field.username == "0000-0000-0000"
+
+        def test_playstation_field(self):
+            profile_field = social.PlaystationProfileField("username")
+            assert profile_field._KEY == "Playstation"
+            assert profile_field.flavour_text == "BE MOVED"
+            assert profile_field.username == "username"
+
+        def test_xbox_field(self):
+            profile_field = social.XBoxProfileField("username")
+            assert profile_field._KEY == "XBox"
+            assert profile_field.flavour_text == "added your :regional_indicator_x::regional_indicator_b:" \
+                                                 ":regional_indicator_o::negative_squared_cross_mark:!"
+            assert profile_field.username == "username"
+
+        def test_ubisoft_field(self):
+            profile_field = social.UbisoftProfileField("Good_Praxis")
+            assert profile_field._KEY == "Ubisoft"
+            assert profile_field.flavour_text == "Glad to have your username there! ~~At least it's not origin!~~"
+            assert profile_field.username == "Good_Praxis"
+
+        def test_origin_field(self):
+            profile_field = social.OriginProfileField("ComradePraxis")
+            assert profile_field._KEY == "Origin"
+            assert profile_field.flavour_text == "Glad to have your username there! ~~At least it's not uplay!~~"
+            assert profile_field.username == "ComradePraxis"
+
+        def test_epic_field(self):
+            profile_field = social.EpicProfileField("GoodPraxis")
+            assert profile_field._KEY == "Epic"
+            assert profile_field.flavour_text == "What do ya say? Fortnite 2nite?"
+            assert profile_field.username == "GoodPraxis"
