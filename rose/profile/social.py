@@ -70,6 +70,15 @@ class MastodonProfileField(DomainProfileField):
         self._URL = "https://{}/@{}"
 
 
+class SteamProfileField(DomainProfileField):
+    def __init__(self, value):
+        super().__init__("Steam",
+                         value,
+                         [r'(?:[\w:/\.]+)/(?P<domain>\w+)/(?P<username>\w+)/?'])
+        self._FLAVOUR_TEXT = ":joystick: Full *Steam* Ahead!\nGet it?"
+        self._URL = "https://steamcommunity.com/{}/{}/"
+
+
 class TwitterProfileField(ProfileField):
     def __init__(self, value):
         super().__init__("Twitter", value)

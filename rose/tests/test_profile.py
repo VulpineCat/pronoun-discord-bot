@@ -61,7 +61,6 @@ class TestProfileFields(object):
             with pytest.raises(TypeError):
                 profile_field = social.TelegramProfileField()
 
-
     class TestMastodonField:
         def test_mastodon_url(self):
             profile_field = social.MastodonProfileField("https://vulpine.club/@praxis")
@@ -71,13 +70,35 @@ class TestProfileFields(object):
         def test_mastodon_username_preceeding_at(self):
             profile_field = social.MastodonProfileField("@praxis@vulpine.club")
             assert profile_field.username == "praxis"
+            assert profile_field.domain == "vulpine.club"
             assert profile_field.url == "https://vulpine.club/@praxis"
 
         def test_mastodon_username_without_preceeding_at(self):
             profile_field = social.MastodonProfileField("praxis@vulpine.club")
             assert profile_field.username == "praxis"
+            assert profile_field.domain == "vulpine.club"
             assert profile_field.url == "https://vulpine.club/@praxis"
 
+        def test_mastodon_flavour_text(self):
+            profile_field = social.MastodonProfileField("praxis@vulpine.club")
+            assert profile_field.flavour_text == "See you in the Fediverse!"
+
+    class TestSteamField:
+        def test_steam_id_url(self):
+            profile_field = social.SteamProfileField("https://steamcommunity.com/id/PraxisCat/")
+            assert profile_field.username == "PraxisCat"
+            assert profile_field.domain == "id"
+            assert profile_field.url == "https://steamcommunity.com/id/PraxisCat/"
+
+        def test_steam_profiles_url(self):
+            profile_field = social.SteamProfileField("https://steamcommunity.com/profiles/76561198042059463")
+            assert profile_field.username == "76561198042059463"
+            assert profile_field.domain == "profiles"
+            assert profile_field.url == "https://steamcommunity.com/profiles/76561198042059463/"
+
+        def test_steam_flavour_text(self):
+            profile_field = social.SteamProfileField("https://steamcommunity.com/id/PraxisCat/")
+            assert profile_field.flavour_text == ":joystick: Full *Steam* Ahead!\nGet it?"
 
     class TestOtherFields:
         def test_facebook_field(self):
