@@ -1,29 +1,51 @@
 import re
 
 
-class ProfileField:
-    def __init__(self, key=None, value=None, extract_pattern_list=[r'^(?:(?:.*?/?@?))(?P<username>\w+)(?:/?)$']):
+class SimpleProfileField:
+    def __init__(self, key=None, value=None):
         self._KEY = key
-        self._EXTRACT_PATTERN_LIST = extract_pattern_list
-        self._user_data = self.extract_user_data(value)
+        self._user_data = {"username": value}
 
     @property
     def username(self):
         """Username on platform"""
         return self._user_data["username"]
-
     @username.getter
     def username(self):
         return self._user_data["username"]
 
     @username.setter
     def username(self, value):
-        self._user_data = self.extract_user_data(value)
+        self._user_data["username"] = value
 
     @property
     def flavour_text(self):
         """Flavour text of service"""
         return self._FLAVOUR_TEXT
+
+
+class SwitchProfileField(SimpleProfileField):
+    def __init__(self, value):
+        super().__init__("Switch", value)
+        self._FLAVOUR_TEXT = ":joy: :spy: Get it? It's a ***joy con***"
+
+
+class DSProfileField(SimpleProfileField):
+    def __init__(self, value):
+        super().__init__("3DS", value)
+        self._FLAVOUR_TEXT = "Happy Gaming!"
+
+
+class ProfileField(SimpleProfileField):
+    def __init__(self, key=None, value=None, extract_pattern_list=[r'^(?:(?:.*?/?@?))(?P<username>\w+)(?:/?)$']):
+        super().__init__(key)
+        self._KEY = key
+        self._EXTRACT_PATTERN_LIST = extract_pattern_list
+        self._user_data = self.extract_user_data(value)
+
+    @SimpleProfileField.username.setter
+    def username(self, value):
+        self._user_data = self.extract_user_data(value)
 
     @property
     def url(self):
@@ -35,48 +57,6 @@ class ProfileField:
             if re.match(pattern, value):
                 return re.match(pattern, value).groupdict()
         raise ValueError
-
-
-class DomainProfileField(ProfileField):
-    def __init__(self, key=None, value=None, extract_pattern_list=[r'(\w+$|\w+(?=/?$))']):
-        super().__init__(key, value, extract_pattern_list)
-
-    @property
-    def domain(self):
-        """Domain which user uses"""
-        return self._user_data["domain"]
-
-    @domain.getter
-    def domain(self):
-        return self._user_data["domain"]
-
-    @domain.setter
-    def domain(self, value):
-        self._user_data,  = self.extract_username(value)
-
-    @property
-    def url(self):
-        """URL to profile on domain"""
-        return self._URL.format(self._user_data["domain"], self._user_data["username"])
-
-
-class MastodonProfileField(DomainProfileField):
-    def __init__(self, value):
-        super().__init__("Mastodon",
-                         value,
-                         [r'^((?:http(?:s)?://(?:www\.)?)?(?P<domain>\w+\.\w+)/@)(?P<username>\w+)',
-                          r'^(?:@?)(?P<username>\w+)(?:@)(?P<domain>\w+\.\w+)'])
-        self._FLAVOUR_TEXT = "See you in the Fediverse!"
-        self._URL = "https://{}/@{}"
-
-
-class SteamProfileField(DomainProfileField):
-    def __init__(self, value):
-        super().__init__("Steam",
-                         value,
-                         [r'^(?:[\w:/\.]+)/(?P<domain>\w+)/(?P<username>\w+)/?$'])
-        self._FLAVOUR_TEXT = ":joystick: Full *Steam* Ahead!\nGet it?"
-        self._URL = "https://steamcommunity.com/{}/{}/"
 
 
 class TwitterProfileField(ProfileField):
@@ -141,14 +121,45 @@ class FuraffinityProfileField(ProfileField):
         self._FLAVOUR_TEXT = ":cat: :dog: :bird: :crocodile: uwu"
         self._URL = "https://www.furaffinity.net/user/{}/"
 
-class SwitchProfileField(ProfileField):
-    def __init__(self, value):
-        super().__init__("Switch", value, [r'(?P<username>[\w-]+)'])
-        self._FLAVOUR_TEXT = ":joy: :spy: Get it? It's a ***joy con***"
-        self._URL = "{}"
 
-class DSProfileField(ProfileField):
+class DomainProfileField(ProfileField):
+    def __init__(self, key=None, value=None, extract_pattern_list=[r'(\w+$|\w+(?=/?$))']):
+        super().__init__(key, value, extract_pattern_list)
+
+    @property
+    def domain(self):
+        """Domain which user uses"""
+        return self._user_data["domain"]
+
+    @domain.getter
+    def domain(self):
+        return self._user_data["domain"]
+
+    @domain.setter
+    def domain(self, value):
+        self._user_data,  = self.extract_username(value)
+
+    @property
+    def url(self):
+        """URL to profile on domain"""
+        return self._URL.format(self._user_data["domain"], self._user_data["username"])
+
+
+class MastodonProfileField(DomainProfileField):
     def __init__(self, value):
-        super().__init__("3DS", value, [r'(?P<username>[\w-]+)'])
-        self._FLAVOUR_TEXT = "Happy Gaming!"
-        self._URL = "{}"
+        super().__init__("Mastodon",
+                         value,
+                         [r'^((?:http(?:s)?://(?:www\.)?)?(?P<domain>\w+\.\w+)/@)(?P<username>\w+)',
+                          r'^(?:@?)(?P<username>\w+)(?:@)(?P<domain>\w+\.\w+)'])
+        self._FLAVOUR_TEXT = "See you in the Fediverse!"
+        self._URL = "https://{}/@{}"
+
+
+class SteamProfileField(DomainProfileField):
+    def __init__(self, value):
+        super().__init__("Steam",
+                         value,
+                         [r'^(?:[\w:/\.]+)/(?P<domain>\w+)/(?P<username>\w+)/?$'])
+        self._FLAVOUR_TEXT = ":joystick: Full *Steam* Ahead!\nGet it?"
+        self._URL = "https://steamcommunity.com/{}/{}/"
+
