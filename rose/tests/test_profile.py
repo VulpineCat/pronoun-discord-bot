@@ -176,4 +176,9 @@ class TestProfileFields(object):
             assert profile_field.username == "SW-0000-0000-0000"
             assert profile_field.url == "SW-0000-0000-0000"
 
-            
+        def test_3ds_field(self):
+            profile_field = social.DSProfileField("0000-0000-0000")
+            assert profile_field._KEY == "3DS"
+            assert profile_field.flavour_text == "Happy Gaming!"
+            assert profile_field.username == "0000-0000-0000"
+            assert profile_field.url == "0000-0000-0000"

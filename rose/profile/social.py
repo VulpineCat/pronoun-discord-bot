@@ -146,3 +146,9 @@ class SwitchProfileField(ProfileField):
         super().__init__("Switch", value, [r'(?P<username>[\w-]+)'])
         self._FLAVOUR_TEXT = ":joy: :spy: Get it? It's a ***joy con***"
         self._URL = "{}"
+
+class DSProfileField(ProfileField):
+    def __init__(self, value):
+        super().__init__("3DS", value, [r'(?P<username>[\w-]+)'])
+        self._FLAVOUR_TEXT = "Happy Gaming!"
+        self._URL = "{}"
