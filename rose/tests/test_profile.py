@@ -34,3 +34,8 @@ class TestProfile(object):
         profile.add_field("Twitter", "@real_praxis")
         assert profile.generate_profile("Praxis") == "**Profile of Praxis**\n\nTwitter:    " \
                                                      "https://twitter.com/real_praxis\n"
+
+    def test_profile_generate_with_simple_field(self):
+        profile = prof.Profile("1")
+        profile.add_field("Origin", "ComradePraxis")
+        assert profile.generate_profile("Praxis") == "**Profile of Praxis**\n\nOrigin:    ComradePraxis\n"
