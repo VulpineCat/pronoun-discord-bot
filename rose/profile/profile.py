@@ -15,11 +15,6 @@ class Profile:
     def fields(self):
         return self._fields
 
-    @staticmethod
-    def generate_external_profile(id, username):
-        profile = Profile(id)
-        return profile.generate_profile(username)
-
     def generate_profile(self, username):
         if self._fields:
             ret = ["{}:    {}\n".format(k, v.url) if isinstance(v, ProfileField) else
