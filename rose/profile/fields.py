@@ -23,6 +23,9 @@ class SimpleProfileField:
         """Flavour text of service"""
         return self._FLAVOUR_TEXT
 
+    def __eq__(self, other):
+        return self.username == other.username
+
 
 class SwitchProfileField(SimpleProfileField):
     def __init__(self, value):
