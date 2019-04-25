@@ -11,7 +11,7 @@ class TestFieldFactory:
     def test_all_factory_branches(self):
         test_dict = {'Twitter': '@real_praxis',
                      'Switch': 'SW0000-0000-0000',
-                     '3DS': '0000-0000-0000',
+                     'DS': '0000-0000-0000',
                      'Playstation': 'username',
                      'XBox': 'username',
                      'Ubisoft': 'username',
@@ -30,7 +30,7 @@ class TestFieldFactory:
 
         for k, v in test_dict.items():
             field = factory.get_field_for(k, v)
-            assert field._KEY == k
+            assert field._KEY == k.lower()
 
     def test_raise_value_error_if_unknow_key(self):
         with pytest.raises(ValueError):

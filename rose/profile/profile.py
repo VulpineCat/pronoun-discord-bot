@@ -2,9 +2,10 @@ import rose.profile.field_factory as factory
 from rose.profile.fields import ProfileField
 
 class Profile:
-    def __init__(self, id):
+    def __init__(self, id, callback=lambda arg: arg):
         self._id = id
         self._fields = dict()
+        self._change_callback = callback
 
     @property
     def fields(self):
@@ -30,3 +31,4 @@ class Profile:
 
     def add_field(self, key, value):
         self._fields[key] = (factory.get_field_for(key, value))
+        self._change_callback(self)

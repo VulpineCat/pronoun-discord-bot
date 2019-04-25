@@ -4,8 +4,8 @@ def setup(name="data.db"):
     con = sqlite3.connect(name)
     cur = con.cursor()
     cur.execute('''
-    CREATE TABLE user(
-        discord_id INTEGER, 
+    CREATE TABLE users(
+        id INTEGER, 
         steam TEXT, 
         switch TEXT, 
         ds TEXT, 

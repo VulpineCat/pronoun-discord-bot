@@ -6,7 +6,7 @@ def get_field_for(key, value):
         return fields.TwitterProfileField(value)
     elif key == "Switch":
         return fields.SwitchProfileField(value)
-    elif key == "3DS":
+    elif key == "DS":
         return fields.DSProfileField(value)
     elif key == "Playstation":
         return fields.PlaystationProfileField(value)
