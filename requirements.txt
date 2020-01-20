@@ -1,4 +1,4 @@
 discord.py==0.16.12
 python-dotenv==0.10.0
-pytest==4.4.0
+pytest==5.3.3
 
